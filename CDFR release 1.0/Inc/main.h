@@ -33,7 +33,8 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "VL53L1X_api.h"
+#include "F_VL53L1X.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -61,6 +62,14 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define USER_Btn_Pin GPIO_PIN_13
 #define USER_Btn_GPIO_Port GPIOC
+#define XSHUNT_DISTANCE_1_Pin GPIO_PIN_2
+#define XSHUNT_DISTANCE_1_GPIO_Port GPIOF
+#define XSHUNT_DISTANCE_2_Pin GPIO_PIN_3
+#define XSHUNT_DISTANCE_2_GPIO_Port GPIOF
+#define XSHUNT_DISTANCE_3_Pin GPIO_PIN_4
+#define XSHUNT_DISTANCE_3_GPIO_Port GPIOF
+#define XSHUNT_DISTANCE_4_Pin GPIO_PIN_5
+#define XSHUNT_DISTANCE_4_GPIO_Port GPIOF
 #define MCO_Pin GPIO_PIN_0
 #define MCO_GPIO_Port GPIOH
 #define RMII_MDC_Pin GPIO_PIN_1

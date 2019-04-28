@@ -38,6 +38,10 @@ Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o: \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h \
+ /home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/core/VL53L1X_api.h \
+ /home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/platform/vl53l1_platform.h \
+ /home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/platform/vl53l1_types.h \
+ ../Inc/F_VL53L1X.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h \
@@ -120,6 +124,14 @@ Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.o: \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h:
 
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h:
+
+/home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/core/VL53L1X_api.h:
+
+/home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/platform/vl53l1_platform.h:
+
+/home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/platform/vl53l1_types.h:
+
+../Inc/F_VL53L1X.h:
 
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:
 

@@ -32,8 +32,11 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h ../Inc/i2c.h \
- ../Inc/main.h ../Inc/lwip.h \
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h \
+ /home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/core/VL53L1X_api.h \
+ /home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/platform/vl53l1_platform.h \
+ /home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/platform/vl53l1_types.h \
+ ../Inc/F_VL53L1X.h ../Inc/main.h ../Inc/i2c.h ../Inc/lwip.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/opt.h ../Inc/lwipopts.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/debug.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/arch.h \
@@ -140,9 +143,17 @@ Src/main.o: ../Src/main.c ../Inc/main.h \
 
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h:
 
-../Inc/i2c.h:
+/home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/core/VL53L1X_api.h:
+
+/home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/platform/vl53l1_platform.h:
+
+/home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/platform/vl53l1_types.h:
+
+../Inc/F_VL53L1X.h:
 
 ../Inc/main.h:
+
+../Inc/i2c.h:
 
 ../Inc/lwip.h:
 

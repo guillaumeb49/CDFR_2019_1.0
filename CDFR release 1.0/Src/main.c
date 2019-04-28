@@ -101,8 +101,13 @@ int main(void)
   MX_USART3_UART_Init();
   MX_LWIP_Init();
   MX_USB_DEVICE_Init();
-  /* USER CODE BEGIN 2 */
+  MX_TIM13_Init();
 
+  /* USER CODE BEGIN 2 */
+  F_VL53L1X_InitSensors();
+
+  TIM13->DIER |= TIM_DIER_UIE;	// Enable interrupt
+    TIM13->CR1 |= TIM_CR1_CEN;
   /* USER CODE END 2 */
 
   /* Infinite loop */

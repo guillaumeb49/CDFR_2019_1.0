@@ -98,6 +98,7 @@
 "Middlewares/Third_Party/LwIP/src/netif/ppp/upap.o"
 "Middlewares/Third_Party/LwIP/src/netif/ppp/utils.o"
 "Middlewares/Third_Party/LwIP/src/netif/ppp/vj.o"
+"Src/F_VL53L1X.o"
 "Src/ethernetif.o"
 "Src/gpio.o"
 "Src/i2c.o"

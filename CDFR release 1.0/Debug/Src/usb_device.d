@@ -35,6 +35,10 @@ Src/usb_device.o: ../Src/usb_device.c ../Inc/usb_device.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
  ../Inc/usbd_conf.h ../Inc/main.h \
+ /home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/core/VL53L1X_api.h \
+ /home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/platform/vl53l1_platform.h \
+ /home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/platform/vl53l1_types.h \
+ ../Inc/F_VL53L1X.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h \
  ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h \
@@ -120,6 +124,14 @@ Src/usb_device.o: ../Src/usb_device.c ../Inc/usb_device.h \
 ../Inc/usbd_conf.h:
 
 ../Inc/main.h:
+
+/home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/core/VL53L1X_api.h:
+
+/home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/platform/vl53l1_platform.h:
+
+/home/guillaume/Documents/CDFR_2019/CDFR_2019_1.0/CDFR\ release\ 1.0/Drivers/API_VL53L1_ULD/platform/vl53l1_types.h:
+
+../Inc/F_VL53L1X.h:
 
 ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h:
 
