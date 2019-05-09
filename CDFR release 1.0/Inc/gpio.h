@@ -32,13 +32,20 @@
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */
-
+#define LED_Red		GPIO_ODR_ODR_14
+#define LED_Blue 	GPIO_ODR_ODR_7
+#define LED_Green	GPIO_ODR_ODR_0
+#define BP_NUCLEO	GPIO_ODR_ODR_13
 /* USER CODE END Private defines */
 
 void MX_GPIO_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+void F_GPIO_SetLedRed(int state);
+void F_GPIO_SetLedBlue(int state);
+void F_GPIO_SetLedGreen(int state);
+void F_GPIO_ToogleLedGreen(void);
+void F_GPIO_ToogleLedRed(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

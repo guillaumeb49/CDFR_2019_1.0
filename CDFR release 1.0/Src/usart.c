@@ -101,6 +101,23 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 
 /* USER CODE BEGIN 1 */
 
+#if PRINTF_USB_UART == 0
+int __io_putchar(int ch){
+	USART6->DR = ch;
+	// Loop while character not sent
+	while(!(USART6->SR & USART_SR_TXE));
+	USART6->SR &= ~USART_SR_TXE;
+	return(ch);
+}
+
+int __io_getchar(void){
+
+  // Loop until the reception buffer is not empty
+  while(!(USART6->SR & USART_SR_RXNE));
+
+  return((int)USART6->DR);
+}
+#endif
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -99,15 +99,33 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_USART3_UART_Init();
+#if USE_TCP_SERVER == 1
   MX_LWIP_Init();
+#endif
   MX_USB_DEVICE_Init();
   MX_TIM13_Init();
 
   /* USER CODE BEGIN 2 */
+#if PRINTF_USB_UART == 1
+  printf("Initializing the VL53L1X sensors....\r\n");
+#endif
   F_VL53L1X_InitSensors();
 
   TIM13->DIER |= TIM_DIER_UIE;	// Enable interrupt
-    TIM13->CR1 |= TIM_CR1_CEN;
+  TIM13->CR1 |= TIM_CR1_CEN;
+
+    // Initialize the TCP Echo Server
+#if PRINTF_USB_UART == 1
+  printf("Initializing the TCP server....\r\n");
+#endif
+
+#if USE_TCP_SERVER == 1
+      tcp_server_init();
+#endif
+
+#if PRINTF_USB_UART == 1
+  printf("Entering the infinite loop....\r\n");
+#endif
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -117,6 +135,11 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+	  // Handle the TCP connection
+#if USE_TCP_SERVER == 1
+	  MX_LWIP_Process();
+#endif
   }
   /* USER CODE END 3 */
 }

@@ -55,7 +55,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <sys/times.h>
-
+#include "usbd_cdc_if.h"
 
 /* Variables */
 //#undef errno
@@ -91,7 +91,7 @@ void _exit (int status)
 	while (1) {}		/* Make sure we hang here */
 }
 
-__attribute__((weak)) int _read(int file, char *ptr, int len)
+int _read(int file, char *ptr, int len)
 {
 	int DataIdx;
 
@@ -100,17 +100,25 @@ __attribute__((weak)) int _read(int file, char *ptr, int len)
 		*ptr++ = __io_getchar();
 	}
 
+
 return len;
 }
 
-__attribute__((weak)) int _write(int file, char *ptr, int len)
+int _write(int file, char *ptr, int len)
 {
 	int DataIdx;
 
+#if PRINTF_USB_UART == 1
+	CDC_Transmit_FS((uint8_t *)ptr, (uint16_t)len);
+
+#else
 	for (DataIdx = 0; DataIdx < len; DataIdx++)
-	{
-		__io_putchar(*ptr++);
-	}
+		{
+			__io_putchar(*ptr++);
+		}
+#endif
+
+
 	return len;
 }
 

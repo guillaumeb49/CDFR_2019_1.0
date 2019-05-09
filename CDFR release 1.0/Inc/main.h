@@ -35,6 +35,7 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 #include "VL53L1X_api.h"
 #include "F_VL53L1X.h"
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -119,7 +120,8 @@ void Error_Handler(void);
 #define LD2_Pin GPIO_PIN_7
 #define LD2_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-
+#define PRINTF_USB_UART		1		// 0 : UART , 1 : USB CDC
+#define USE_TCP_SERVER 		0
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

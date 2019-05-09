@@ -190,7 +190,38 @@ void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 2 */
+void F_GPIO_SetLedRed(int state){
+	(state) ? (GPIOB->ODR |= LED_Red) : (GPIOB->ODR &= ~LED_Red) ;
+}
 
+void F_GPIO_SetLedBlue(int state){
+	// Led sur PB7
+	(state) ? (GPIOB->ODR |= LED_Blue) : (GPIOB->ODR &= ~LED_Blue) ;
+}
+
+void F_GPIO_SetLedGreen(int state){
+	// Led sur PB14
+	(state) ? (GPIOB->ODR |= LED_Green) : (GPIOB->ODR &= ~LED_Green) ;
+}
+
+void F_GPIO_ToogleLedGreen(void){
+	// Led sur PB14
+	GPIOB->ODR ^= LED_Green;
+}
+
+void F_GPIO_ToogleLedRed(void){
+	if((GPIOB->ODR & LED_Red) > 0){
+		GPIOB->ODR &= ~LED_Red;
+	}else{
+		GPIOB->ODR |= LED_Red;
+	}
+}
+
+int F_GPIO_GetLBtn(void){
+	int l_state = 0;
+	(GPIOC->IDR & BP_NUCLEO) ? (l_state=1) : (l_state=0) ;
+	return l_state;
+}
 /* USER CODE END 2 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

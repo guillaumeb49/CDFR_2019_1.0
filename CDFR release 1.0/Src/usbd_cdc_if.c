@@ -23,7 +23,21 @@
 #include "usbd_cdc_if.h"
 
 /* USER CODE BEGIN INCLUDE */
+#if PRINTF_USB_UART == 1
+int __io_putchar(int ch){
+	CDC_Transmit_FS((uint8_t *)&ch, 1);
 
+	return(ch);
+}
+
+int __io_getchar(void){
+
+  // Loop until the reception buffer is not empty
+  while(!(USART6->SR & USART_SR_RXNE));
+
+  return((int)USART6->DR);
+}
+#endif
 /* USER CODE END INCLUDE */
 
 /* Private typedef -----------------------------------------------------------*/

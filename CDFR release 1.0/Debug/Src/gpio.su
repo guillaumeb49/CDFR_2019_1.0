@@ -1,1 +1,7 @@
 gpio.c:42:6:MX_GPIO_Init	64	static
+gpio.c:193:6:F_GPIO_SetLedRed	16	static
+gpio.c:197:6:F_GPIO_SetLedBlue	16	static
+gpio.c:202:6:F_GPIO_SetLedGreen	16	static
+gpio.c:207:6:F_GPIO_ToogleLedGreen	4	static
+gpio.c:212:6:F_GPIO_ToogleLedRed	4	static
+gpio.c:220:5:F_GPIO_GetLBtn	16	static
