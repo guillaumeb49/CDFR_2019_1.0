@@ -118,7 +118,7 @@ int main(void)
 #if PRINTF_USB_UART == 1
   printf("Initializing the TCP server....\r\n");
 #endif
-
+  F_GPIO_SetLedRed(1);
 #if USE_TCP_SERVER == 1
       tcp_server_init();
 #endif

@@ -37,6 +37,7 @@ void F_Process_Command(struct tcp_command s_cmd_received, struct tcp_answer *s_c
 			break;
 		// Get distances from sensors
 		case CMD_GET_DISTANCES:
+			F_Cmd_GetDistance(s_cmd_received, s_cmd_answer);
 			break;
 
 		// Set robot's position
@@ -100,12 +101,12 @@ uint8_t F_Cmd_SetLED(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd
 		F_GPIO_SetLedBlue(1);
 	}
 	// blue
-	if(s_cmd_received.params[0] == 2)
+	else if(s_cmd_received.params[0] == 2)
 	{
 		F_GPIO_SetLedGreen(1);
 	}
 	// Green
-	if(s_cmd_received.params[0] == 4)
+	else if(s_cmd_received.params[0] == 4)
 	{
 		F_GPIO_SetLedRed(1);
 	}
@@ -140,4 +141,20 @@ uint8_t F_Cmd_GetLED(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd
 	return status;
 }
 
+
+/**
+ * Set the on board LEDs
+ */
+uint8_t F_Cmd_GetDistance(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer)
+{
+	uint8_t status = STATUS_OK;
+
+	s_cmd_answer->code_retour = status;
+	s_cmd_answer->reponse[0] = distance_avant_1;
+	s_cmd_answer->reponse[1] = distance_avant_2;
+	s_cmd_answer->reponse[2] = distance_avant_3;
+	s_cmd_answer->reponse[3] = distance_arriere_1;
+
+	return status;
+}
 

@@ -121,7 +121,7 @@ void Error_Handler(void);
 #define LD2_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 #define PRINTF_USB_UART		1		// 0 : UART , 1 : USB CDC
-#define USE_TCP_SERVER 		0
+#define USE_TCP_SERVER 		1
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

@@ -1,4 +1,5 @@
 A_commandes.c:14:6:F_Process_Command	48	static
-A_commandes.c:80:6:F_Cmd_Info	4	static
-A_commandes.c:88:9:F_Cmd_SetLED	40	static
-A_commandes.c:129:9:F_Cmd_GetLED	32	static
+A_commandes.c:81:6:F_Cmd_Info	4	static
+A_commandes.c:89:9:F_Cmd_SetLED	40	static
+A_commandes.c:130:9:F_Cmd_GetLED	32	static
+A_commandes.c:148:9:F_Cmd_GetDistance	32	static

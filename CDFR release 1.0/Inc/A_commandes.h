@@ -10,6 +10,7 @@
 
 #include "A_TCP.h"
 #include "gpio.h"
+#include "F_VL53L1X.h"
 
 #define CMD_INFO			0x01
 #define CMD_SET_LED			0x02
@@ -35,5 +36,6 @@ void F_Process_Command(struct tcp_command s_cmd_received, struct tcp_answer *s_c
 
 uint8_t F_Cmd_SetLED(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer);
 uint8_t F_Cmd_GetLED(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer);
+uint8_t F_Cmd_GetDistance(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer);
 
 #endif /* A_COMMANDES_H_ */
