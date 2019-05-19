@@ -2,6 +2,9 @@ gpio.c:42:6:MX_GPIO_Init	64	static
 gpio.c:193:6:F_GPIO_SetLedRed	16	static
 gpio.c:197:6:F_GPIO_SetLedBlue	16	static
 gpio.c:202:6:F_GPIO_SetLedGreen	16	static
-gpio.c:207:6:F_GPIO_ToogleLedGreen	4	static
-gpio.c:212:6:F_GPIO_ToogleLedRed	4	static
-gpio.c:220:5:F_GPIO_GetLBtn	16	static
+gpio.c:207:6:F_GPIO_ToogleLedRed	4	static
+gpio.c:215:5:F_GPIO_GetBtn	16	static
+gpio.c:221:5:F_GPIO_GetTirette	16	static
+gpio.c:227:6:F_GPIO_SetMotorDroitDir	16	static
+gpio.c:232:6:F_GPIO_SetMotorGaucheDir	16	static
+gpio.c:237:6:F_GPIO_SetEnableMotors	16	static

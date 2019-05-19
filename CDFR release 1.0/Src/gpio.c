@@ -204,11 +204,6 @@ void F_GPIO_SetLedGreen(int state){
 	(state) ? (GPIOB->ODR |= LED_Green) : (GPIOB->ODR &= ~LED_Green) ;
 }
 
-void F_GPIO_ToogleLedGreen(void){
-	// Led sur PB14
-	GPIOB->ODR ^= LED_Green;
-}
-
 void F_GPIO_ToogleLedRed(void){
 	if((GPIOB->ODR & LED_Red) > 0){
 		GPIOB->ODR &= ~LED_Red;
@@ -217,10 +212,31 @@ void F_GPIO_ToogleLedRed(void){
 	}
 }
 
-int F_GPIO_GetLBtn(void){
+int F_GPIO_GetBtn(void){
 	int l_state = 0;
 	(GPIOC->IDR & BP_NUCLEO) ? (l_state=1) : (l_state=0) ;
 	return l_state;
+}
+
+int F_GPIO_GetTirette(void){
+	int l_state = 0;
+	(GPIOF->IDR & GPIO_PIN_15) ? (l_state=1) : (l_state=0) ;
+	return l_state;
+}
+
+void F_GPIO_SetMotorDroitDir(int dir){
+	// PF 12
+	(dir<0) ? (GPIOF->ODR |= GPIO_ODR_ODR_12) : (GPIOF->ODR &= ~GPIO_ODR_ODR_12) ;
+}
+
+void F_GPIO_SetMotorGaucheDir(int dir){
+	// PF 13
+	(dir<0) ? (GPIOF->ODR |= GPIO_ODR_ODR_13) : (GPIOF->ODR &= ~GPIO_ODR_ODR_13) ;
+}
+
+void F_GPIO_SetEnableMotors(int state){
+	// PF 14
+	(state) ? (GPIOF->ODR |= GPIO_ODR_ODR_14) : (GPIOF->ODR &= ~GPIO_ODR_ODR_14) ;
 }
 /* USER CODE END 2 */
 

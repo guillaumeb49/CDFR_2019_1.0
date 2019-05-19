@@ -29,7 +29,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "tcp_server.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,7 +50,17 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+extern Localisation g_estimate;
+extern Localisation consigne[NB_POINT_MAX];
+extern float g_errRightOld ;
+extern float g_errLeftOld ;
+extern int g_i_point;
+extern int g_timer_9_cnt;
+extern int g_temps_match;
+extern int g_start_signal;
+extern int g_stop_signal;
 
+char g_uart_buff='^';
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -114,6 +124,14 @@ int main(void)
   TIM13->DIER |= TIM_DIER_UIE;	// Enable interrupt
   TIM13->CR1 |= TIM_CR1_CEN;
 
+  F_Init_TimerServo();
+
+
+  Init_Motors();
+//  Init_QEI();
+//  Init_Timer9();
+//  Init_Timer10();
+
     // Initialize the TCP Echo Server
 #if PRINTF_USB_UART == 1
   printf("Initializing the TCP server....\r\n");
@@ -123,6 +141,27 @@ int main(void)
       tcp_server_init();
 #endif
 
+
+  int dcG=0,dcD=0,bp_flag=0,dutyC=25;
+  float speedL,speedR;
+  int angleDeg=90;
+
+  F_QEI_setPosition(100,-420,0);
+
+  F_AUTO_AddTargetPoint( 220 , -200 , 0);		// 1
+  F_AUTO_AddTargetPoint( 500 , -200 , 0);		// 2
+  F_AUTO_AddTargetPoint( 900 , -450 , 0);		// 2
+  F_AUTO_AddTargetPoint( 500 , -420 , 0);		// 3 Pousse le palet 1
+  F_AUTO_AddTargetPoint( 500 , -650 , 0);
+  F_AUTO_AddTargetPoint( 850 , -650 , 0);
+  F_AUTO_AddTargetPoint( 850 , -950 , 0);
+  F_AUTO_AddTargetPoint( 300 , -1050 , 0);
+  F_AUTO_AddTargetPoint( 250 , -900 , 0);
+
+  //F_AUTO_Enable();
+
+  F_PWM_SetCmdMotorDroit(90);
+  F_PWM_SetCmdMotorGauche(50);
 #if PRINTF_USB_UART == 1
   printf("Entering the infinite loop....\r\n");
 #endif

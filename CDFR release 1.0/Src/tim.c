@@ -104,38 +104,51 @@ void MX_TIM3_Init(void)
 /* TIM4 init function */
 void MX_TIM4_Init(void)
 {
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
-  TIM_OC_InitTypeDef sConfigOC = {0};
+    GPIO_InitTypeDef GPIO_InitStruct;
 
-  htim4.Instance = TIM4;
-  htim4.Init.Prescaler = 0;
-  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4.Init.Period = 0;
-  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_PWM_Init(&htim4) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 0;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_3) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_4) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  HAL_TIM_MspPostInit(&htim4);
+	/**TIM4 GPIO Configuration
+	PD14     ------> TIM4_CH3
+	PD15     ------> TIM4_CH4
+	*/
+	GPIO_InitStruct.Pin = GPIO_PIN_14|GPIO_PIN_15;
+	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	GPIO_InitStruct.Alternate = GPIO_AF2_TIM4;
+	HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+	// Init Timer 4 CH4
+	RCC->APB1ENR |= RCC_APB1ENR_TIM4EN;	// Enable clock on timer 4
+	TIM4->PSC = 1;	// Prescaler
+
+	TIM4->ARR = 2250-1;	// 20 KHz (PWM Frequency)
+
+	TIM4->CCMR2 |= TIM_CCMR2_OC4M_1 | TIM_CCMR2_OC4M_2;	// PWM mode 1 upcounting
+	TIM4->CCMR2 &= ~TIM_CCMR2_OC4M_0;
+
+	TIM4->CCMR2 |= TIM_CCMR2_OC4PE;	// Preload Enable
+	TIM4->CCMR2 &= ~TIM_CCMR2_CC4S;	// Output
+	TIM4->CCER 	|= TIM_CCER_CC4E;	// Channel is ON
+	TIM4->CR1 	|= TIM_CR1_ARPE;	// Auto reload
+	TIM4->EGR 	|= TIM_EGR_UG;		// Reinitialize the counter
+	TIM4->SR 	&= TIM_SR_UIF;		// Clear update interrupt flag
+	TIM4->BDTR 	|= TIM_BDTR_MOE;	// Main output Enable
+
+	TIM4->CCR2 = 0; 	// Set duty cycle to 0%
+
+	// Init Timer 4 CH3
+	TIM4->CCMR2 |= TIM_CCMR2_OC3M_1 | TIM_CCMR2_OC3M_2;	// PWM mode 1 upcounting
+	TIM4->CCMR2 &= ~TIM_CCMR2_OC3M_0;
+
+	TIM4->CCMR2 |= TIM_CCMR2_OC3PE;	// Preload Enable
+	TIM4->CCMR2 &= ~TIM_CCMR2_CC3S;	// Output
+	TIM4->CCER 	|= TIM_CCER_CC3E;	// Channel is ON
+
+	TIM4->CCR3 = 0; 	// Set duty cycle to 0%
+
+	// Start Timer 4
+	TIM4->CR1 |= TIM_CR1_CEN;
+
 
 }
 /* TIM13 init function */
@@ -360,6 +373,58 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
 } 
 
 /* USER CODE BEGIN 1 */
+// Fonction validée sur NUCLEO F429ZI le 18-09-2018
+void F_TIM4_CH3_SetDC(int dc){
+	TIM4->CCR3 = dc*22.5; 	// Set duty cycle to 0%
+}
+// Fonction validée sur NUCLEO F429ZI le 18-09-2018
+void F_TIM4_CH4_SetDC(int dc){
+	TIM4->CCR4 = dc*22.5; 	// Set duty cycle to 0%
+}
+
+
+/**
+ * @brief Initialize Timer 9
+ * Timer 9 : Interruption on overflow every 5 ms
+ * The Timer 9 is clocked at 50 MHz
+ *
+ * Vérifié sur carte NUCLEO-F429ZI le 18-09-2018
+ */
+void Init_Timer9(){
+
+	RCC->APB2ENR |= RCC_APB2ENR_TIM9EN;
+
+	TIM9->CR1 |= TIM_CR1_ARPE;
+	TIM9->PSC = 17995 - 1;	// Prescaler value =  2399+1 = 2400 ====> 24MHz /  2400 = 10 KHz
+	TIM9->ARR = 50-1;
+	TIM9->DIER |= TIM_DIER_UIE;	// Enable interrupt
+
+	NVIC_EnableIRQ(TIM1_BRK_TIM9_IRQn);
+
+	TIM9->CR1 |= TIM_CR1_CEN;
+}
+/**
+ * @brief Initialize Timer 10
+ * Timer 10 : Interruption on overflow every 20 ms
+ * The Timer 10 is clocked at 24 MHz
+ *
+ * Vérifié sur carte NUCLEO-F429ZI le 18-09-2018
+ *
+ */
+void Init_Timer10(){
+
+	RCC->APB2ENR |= RCC_APB2ENR_TIM10EN;
+
+	TIM10->CR1 |= TIM_CR1_ARPE;
+	TIM10->PSC = 17995-1;	// Prescaler value  24MHz / 4*2400 = 10 KHz / 4 = 50 Hz
+	TIM10->ARR = 200-1;
+	TIM10->DIER |= TIM_DIER_UIE;	// Enable interrupt
+
+	NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
+
+	TIM10->CR1 |= TIM_CR1_CEN;
+}
+
 
 /* USER CODE END 1 */
 

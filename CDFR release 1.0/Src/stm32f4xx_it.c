@@ -52,7 +52,11 @@
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+int g_timer_9_cnt =0;
+int g_timer_10_cnt=0;
+int g_temps_match=0;
+int g_start_signal=0;
+int g_stop_signal=0;
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -243,6 +247,50 @@ void OTG_FS_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
+/**
+ * Interrupt process of Timer 9
+ * Motor speed regulation
+ * T = 5ms;
+ */
+void TIM1_BRK_TIM9_IRQHandler(void){
 
+	if(TIM9->SR & TIM_SR_UIF){
+		TIM9->SR &= ~TIM_SR_UIF;
+
+		if(F_GPIO_GetTirette() && g_temps_match<(DUREE_MATCH*1000)){
+			g_start_signal=1;
+			g_stop_signal=0;
+
+			g_temps_match+=5;
+		}else{
+			g_stop_signal=1;
+		}
+
+		g_timer_9_cnt++;
+	}
+}
+/**
+ * Interrupt process of Timer 10
+ * Robot position regulator
+ * T = 20ms;
+ */
+void TIM1_UP_TIM10_IRQHandler(void){
+	if(TIM10->SR & TIM_SR_UIF){
+		TIM10->SR &= ~TIM_SR_UIF;
+
+		/* #### Every 20 ms ### */
+		F_QEI_Read();			// Update localization data
+		F_AUTO_SpeedRegulator();// Call proportional regulator
+
+		/* #### Every 40 ms ### */
+		if(g_timer_10_cnt>1){
+//		F_AUTO_AngularPositionRegulator();// Angular regulation
+		F_AUTO_PositionRegulator();// Position regulation
+		g_timer_10_cnt=0;
+		}
+		g_timer_10_cnt++;
+
+	}
+}
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

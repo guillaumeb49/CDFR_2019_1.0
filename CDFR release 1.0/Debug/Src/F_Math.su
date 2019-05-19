@@ -1,0 +1,6 @@
+F_Math.c:12:7:F_Math_toRad	24	static
+F_Math.c:18:7:F_Math_toDeg	24	static
+F_Math.c:24:5:F_Math_Sign	16	static
+F_Math.c:34:6:F_Math_ModuloPi	16	static
+F_Math.c:47:7:F_Math_Abs	16	static
+F_Math.c:57:7:F_Math_Squared	16	static

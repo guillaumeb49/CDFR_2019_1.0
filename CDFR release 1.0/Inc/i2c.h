@@ -46,6 +46,13 @@ void MX_I2C2_Init(void);
 int F_I2C2_ReadRegister(uint8_t slave_addr, uint8_t register_addr,uint8_t register_addr_2, uint8_t *value_read);
 uint8_t F_I2C2_WriteRegister(uint8_t slave_addr, uint16_t register_addr, uint8_t *value, uint8_t size);
 uint8_t F_I2C2_ReadRegisterVL53L1X(uint8_t slave_addr, uint16_t register_addr, uint8_t nb_value_to_read, uint8_t *value_read);
+
+int Write_I2C1(uint8_t slave_adress, uint8_t *tab_to_send, uint8_t size);
+int F_I2C1_WriteValue(uint8_t slave_addr, uint8_t value);
+int F_I2C1_WriteRegister(uint8_t slave_addr, uint8_t register_addr, uint8_t value);
+int F_I2C1_ReadRegister(uint8_t slave_addr, uint8_t register_addr, uint8_t *value_read);
+int F_I2C1_ReadMultipleRegister(uint8_t slave_addr, uint8_t register_addr, uint8_t nbData ,uint8_t *value_read);
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

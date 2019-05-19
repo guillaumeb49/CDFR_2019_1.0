@@ -1,0 +1,12 @@
+F_IMU.c:7:5:F_IMU_Init	8	static
+F_IMU.c:19:9:F_IMU_Test	16	static
+F_IMU.c:25:5:F_IMU_GetRawData	16	static
+F_IMU.c:43:5:F_IMU_GetOffsetAccelerometer	4	static
+F_IMU.c:57:5:F_IMU_CalcAverageOffsetAccelerometer	40	static
+F_IMU.c:75:5:F_IMU_GetAccelerometerData	24	static
+F_IMU.c:89:5:F_IMU_GetTemp	16	static
+F_IMU.c:99:5:F_IMU_CalcAverageOffsetGyro	40	static
+F_IMU.c:120:6:F_IMU_RawGyroToDegsec	4	static
+F_IMU.c:126:6:F_IMU_Normalize3DVec	40	static
+F_IMU.c:133:6:F_IMU_RawAccToG	4	static
+F_IMU.c:143:6:F_IMU_GetInclinations	4	static

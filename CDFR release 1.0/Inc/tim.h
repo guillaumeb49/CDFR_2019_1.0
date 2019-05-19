@@ -47,7 +47,12 @@ void MX_TIM13_Init(void);
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
                     
 /* USER CODE BEGIN Prototypes */
+void F_TIM4_CH3_SetDC(int dc);
+void F_TIM4_CH4_SetDC(int dc);
 
+void Init_Timer9(void);
+void Init_Timer10(void);
+void Init_Timer12(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
