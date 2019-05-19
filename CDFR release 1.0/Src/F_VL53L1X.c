@@ -29,7 +29,7 @@ void F_VL53L1X_InitSensors()
 	dev_avant_1.addr = 0x52;
 	dev_avant_2.addr = 0x52;
 	dev_avant_3.addr = 0x52;
-	dev_arriere_1.addr = 0x52;
+	//dev_arriere_1.addr = 0x52;
 
 
 	// Configure VL53L1X_AVANT_1_ADDR	0x10	PF2
@@ -52,7 +52,7 @@ void F_VL53L1X_InitSensors()
 		VL53L1X_StartRanging(dev_avant_1);
 
 
-/*	// Configure VL53L1X_AVANT_2_ADDR	0x12	PF3
+	// Configure VL53L1X_AVANT_2_ADDR	0x12	PF3
 		// Set PF2 high
 		GPIOF->ODR |= GPIO_ODR_OD3;
 
@@ -71,9 +71,9 @@ void F_VL53L1X_InitSensors()
 		VL53L1X_StartRanging(dev_avant_2);
 
 
-	// Configure VL53L1X_AVANT_3_ADDR	0x14	PF4
+	// Configure VL53L1X_AVANT_3_ADDR	0x14	PF5
 		// Set PF2 high
-		GPIOF->ODR |= GPIO_ODR_OD4;
+		GPIOF->ODR |= GPIO_ODR_OD5;
 
 		// small delay
 		for(i=0;i<65000;i++){__asm("NOP");}
@@ -90,7 +90,7 @@ void F_VL53L1X_InitSensors()
 		VL53L1X_StartRanging(dev_avant_3);
 
 
-	// Configure VL53L1X_ARRIERE_1_ADDR	0x16	PF5
+/*	// Configure VL53L1X_ARRIERE_1_ADDR	0x16	PF5
 		// Set PF2 high
 		GPIOF->ODR |= GPIO_ODR_OD2;
 
@@ -132,7 +132,7 @@ void F_VL53L1X_CheckSensors(void)
 
 	}
 
-	/*// dev_avant_2;
+	// dev_avant_2;
 	VL53L1X_CheckForDataReady(dev_avant_2, &dataReady);
 
 	if(dataReady  != 0)
@@ -160,7 +160,7 @@ void F_VL53L1X_CheckSensors(void)
 
 
 	// dev_arriere_1;
-	VL53L1X_CheckForDataReady(dev_arriere_1, &dataReady);
+	/*VL53L1X_CheckForDataReady(dev_arriere_1, &dataReady);
 
 	if(dataReady  != 0)
 	{
