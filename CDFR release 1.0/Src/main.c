@@ -128,9 +128,9 @@ int main(void)
 
 
   Init_Motors();
-//  Init_QEI();
-//  Init_Timer9();
-//  Init_Timer10();
+  Init_QEI();
+  Init_Timer9();
+  Init_Timer10();
 
     // Initialize the TCP Echo Server
 #if PRINTF_USB_UART == 1
@@ -156,12 +156,11 @@ int main(void)
   F_AUTO_AddTargetPoint( 850 , -650 , 0);
   F_AUTO_AddTargetPoint( 850 , -950 , 0);
   F_AUTO_AddTargetPoint( 300 , -1050 , 0);
-  F_AUTO_AddTargetPoint( 250 , -900 , 0);
+  F_AUTO_AddTargetPoint( 100 , -420 , 0);
 
-  //F_AUTO_Enable();
+  F_AUTO_Enable();
 
-  F_PWM_SetCmdMotorDroit(90);
-  F_PWM_SetCmdMotorGauche(50);
+
 #if PRINTF_USB_UART == 1
   printf("Entering the infinite loop....\r\n");
 #endif

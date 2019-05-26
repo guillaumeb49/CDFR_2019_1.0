@@ -7,6 +7,7 @@
 
 #include "A_commandes.h"
 
+extern Localisation g_estimate;
 
 /**
  *
@@ -42,26 +43,36 @@ void F_Process_Command(struct tcp_command s_cmd_received, struct tcp_answer *s_c
 
 		// Set robot's position
 		case CMD_SET_POSITION:
+			F_Cmd_SetPosition(s_cmd_received, s_cmd_answer);
 			break;
 
 		// get robot's position
 		case CMD_GET_POSITION:
+			F_Cmd_GetPosition(s_cmd_received, s_cmd_answer);
 			break;
 
 		// Start navigation
 		case CMD_GO:
+			F_Cmd_StartStopRegulation(s_cmd_received, s_cmd_answer);
 			break;
 
 		// Add a new point to the list of points
 		case CMD_ADD_POINT:
+			F_Cmd_AddWayPoint(s_cmd_received, s_cmd_answer);
 			break;
 
 		// Remove one point from the list of points
-		case CMD_REMOVE_POINT:
+		case CMD_RESET_LIST_WAYPOINTS:
+			F_Cmd_ResetWayPointsList(s_cmd_received, s_cmd_answer);
 			break;
 
 		// Get the list of points
 		case CMD_GET_LIST_POINTS:
+			break;
+
+		// Get the list of points
+			case CMD_GET_TIRETTE:
+				F_Cmd_GetTirette(s_cmd_received, s_cmd_answer);
 			break;
 
 		// Error, unknown command
@@ -154,6 +165,120 @@ uint8_t F_Cmd_GetDistance(struct tcp_command s_cmd_received, struct tcp_answer *
 	s_cmd_answer->reponse[1] = distance_avant_2;
 	s_cmd_answer->reponse[2] = distance_avant_3;
 	s_cmd_answer->reponse[3] = distance_arriere_1;
+
+	return status;
+}
+
+/**
+ * Set the on board LEDs
+ */
+uint8_t F_Cmd_GetTirette(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer)
+{
+	uint8_t status = STATUS_OK;
+
+	s_cmd_answer->code_retour = status;
+	s_cmd_answer->reponse[0] = (uint16_t)((GPIOC->IDR & GPIO_IDR_ID13)>>13);
+	s_cmd_answer->reponse[1] = 0;
+	s_cmd_answer->reponse[2] = 0;
+	s_cmd_answer->reponse[3] = 0;
+
+	return status;
+}
+
+/**
+ * Set the on board LEDs
+ */
+uint8_t F_Cmd_GetPosition(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer)
+{
+	uint8_t status = STATUS_OK;
+
+	s_cmd_answer->code_retour = status;
+	s_cmd_answer->reponse[0] = (int16_t)(g_estimate.x);
+	s_cmd_answer->reponse[1] = (int16_t)(g_estimate.y);
+	s_cmd_answer->reponse[2] = (int16_t)(g_estimate.teta*1000);
+	s_cmd_answer->reponse[3] = 0;
+
+	return status;
+}
+
+/**
+ * Set the position of the Robot
+ */
+uint8_t F_Cmd_SetPosition(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer)
+{
+	uint8_t status = STATUS_OK;
+
+	F_QEI_setPosition((int16_t)s_cmd_received.params[0], (int16_t)s_cmd_received.params[1], (int16_t)s_cmd_received.params[2]);
+
+	s_cmd_answer->code_retour = status;
+	s_cmd_answer->reponse[0] = 0;
+	s_cmd_answer->reponse[1] = 0;
+	s_cmd_answer->reponse[2] = 0;
+	s_cmd_answer->reponse[3] = 0;
+
+	return status;
+}
+
+
+/**
+ * Add a new WayPoint to the list of WayPoints
+ */
+uint8_t F_Cmd_AddWayPoint(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer)
+{
+	uint8_t status = STATUS_OK;
+
+	status = F_AUTO_AddTargetPoint((float)s_cmd_received.params[0] , (float)s_cmd_received.params[1], (float)s_cmd_received.params[2]);
+
+
+	s_cmd_answer->code_retour = status;
+	s_cmd_answer->reponse[0] = status;
+	s_cmd_answer->reponse[1] = 0;
+	s_cmd_answer->reponse[2] = 0;
+	s_cmd_answer->reponse[3] = 0;
+
+	return status;
+}
+
+/**
+ * Start / Stop the regulation
+ */
+uint8_t F_Cmd_StartStopRegulation(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer)
+{
+	uint8_t status = STATUS_OK;
+
+	// If param 1 = 1, then start regulation
+	if(s_cmd_received.params[0] == 1)
+	{
+		F_AUTO_Enable();
+	}
+	else
+	{
+		F_AUTO_Disable();
+	}
+
+	s_cmd_answer->code_retour = status;
+	s_cmd_answer->reponse[0] = 0;
+	s_cmd_answer->reponse[1] = 0;
+	s_cmd_answer->reponse[2] = 0;
+	s_cmd_answer->reponse[3] = 0;
+
+	return status;
+}
+
+/**
+ * Reset the list of WayPoints
+ */
+uint8_t F_Cmd_ResetWayPointsList(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer)
+{
+	uint8_t status = STATUS_OK;
+
+	F_AUTO_ResetTargetList();
+
+	s_cmd_answer->code_retour = status;
+	s_cmd_answer->reponse[0] = 0;
+	s_cmd_answer->reponse[1] = 0;
+	s_cmd_answer->reponse[2] = 0;
+	s_cmd_answer->reponse[3] = 0;
 
 	return status;
 }

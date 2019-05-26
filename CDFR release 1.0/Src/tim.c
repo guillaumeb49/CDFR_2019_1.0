@@ -32,122 +32,121 @@ TIM_HandleTypeDef htim13;
 /* TIM2 init function */
 void MX_TIM2_Init(void)
 {
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
-  TIM_IC_InitTypeDef sConfigIC = {0};
+	  GPIO_InitTypeDef GPIO_InitStruct;
 
-  htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 0;
-  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 0;
-  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_IC_Init(&htim2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
-  sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
-  sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
-  sConfigIC.ICFilter = 0;
-  if (HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
+		/**TIM2 GPIO Configuration
+		PA15     ------> TIM2_CH1
+		PB3     ------> TIM2_CH2
+		*/
+		GPIO_InitStruct.Pin = GPIO_PIN_15;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_PULLUP;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
+		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+		GPIO_InitStruct.Pin = GPIO_PIN_3;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_PULLUP;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+		// Timer peripheral clock enable
+		RCC->APB1ENR |= RCC_APB1ENR_TIM2EN;	// Enable clock on Timer 2
+		// set them up as encoder inputs
+		TIM2->CCMR1 |=   TIM_CCMR1_CC1S_0 | TIM_CCMR1_CC2S_0;
+		// set both inputs to rising polarity to let it use both edges
+		TIM2->SMCR = 3 ;
+		// Auto Reload Value Enable
+		TIM2->CR1 |= TIM_CR1_ARPE;
+		// Set Auto reload value
+		TIM2->ARR = 0xFFFF;
+		// Configure in rising edge
+		TIM2->CCER = 0; // Enable channel 1 and 2 timer 2
+		// Turn on the timer/counters
+		TIM2->CR1 |= TIM_CR1_CEN;	// Enable Timer 2
 
 }
 /* TIM3 init function */
 void MX_TIM3_Init(void)
 {
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
-  TIM_IC_InitTypeDef sConfigIC = {0};
+	GPIO_InitTypeDef GPIO_InitStruct;
 
-  htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 0;
-  htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3.Init.Period = 0;
-  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_IC_Init(&htim3) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim3, &sMasterConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
-  sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
-  sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
-  sConfigIC.ICFilter = 0;
-  if (HAL_TIM_IC_ConfigChannel(&htim3, &sConfigIC, TIM_CHANNEL_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_TIM_IC_ConfigChannel(&htim3, &sConfigIC, TIM_CHANNEL_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
+		/**TIM3 GPIO Configuration
+		PB4     ------> TIM3_CH1
+		PB5     ------> TIM3_CH2
+		*/
+		GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_PULLUP;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		GPIO_InitStruct.Alternate = GPIO_AF2_TIM3;
+		HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+		// Timer peripheral clock enable
+		RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;	// Enable clock on Timer 3
+		// set them up as encoder inputs
+		TIM3->CCMR1 |=   TIM_CCMR1_CC1S_0 | TIM_CCMR1_CC2S_0;
+		// set both inputs to rising polarity to let it use both edges
+		TIM3->SMCR = 3 ;
+		// Auto Reload Value Enable
+		TIM3->CR1 |= TIM_CR1_ARPE;
+		// Set Auto reload value
+		TIM3->ARR = 0xFFFF;
+		// Configure in rising edge
+		TIM3->CCER = 0; // Enable channel 1 and 2 timer 3
+		// Turn on the timer/counters
+		TIM3->CR1 |= TIM_CR1_CEN;	// Enable Timer 3
 
 }
 /* TIM4 init function */
 void MX_TIM4_Init(void)
 {
-    GPIO_InitTypeDef GPIO_InitStruct;
+	 GPIO_InitTypeDef GPIO_InitStruct;
 
-	/**TIM4 GPIO Configuration
-	PD14     ------> TIM4_CH3
-	PD15     ------> TIM4_CH4
-	*/
-	GPIO_InitStruct.Pin = GPIO_PIN_14|GPIO_PIN_15;
-	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	GPIO_InitStruct.Alternate = GPIO_AF2_TIM4;
-	HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+		/**TIM4 GPIO Configuration
+		PD14     ------> TIM4_CH3
+		PD15     ------> TIM4_CH4
+		*/
+		GPIO_InitStruct.Pin = GPIO_PIN_14|GPIO_PIN_15;
+		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+		GPIO_InitStruct.Pull = GPIO_NOPULL;
+		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+		GPIO_InitStruct.Alternate = GPIO_AF2_TIM4;
+		HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-	// Init Timer 4 CH4
-	RCC->APB1ENR |= RCC_APB1ENR_TIM4EN;	// Enable clock on timer 4
-	TIM4->PSC = 1;	// Prescaler
+		// Init Timer 4 CH4
+		RCC->APB1ENR |= RCC_APB1ENR_TIM4EN;	// Enable clock on timer 4
+		TIM4->PSC = 1;	// Prescaler
 
-	TIM4->ARR = 2250-1;	// 20 KHz (PWM Frequency)
+		TIM4->ARR = 2250-1;	// 20 KHz (PWM Frequency)
 
-	TIM4->CCMR2 |= TIM_CCMR2_OC4M_1 | TIM_CCMR2_OC4M_2;	// PWM mode 1 upcounting
-	TIM4->CCMR2 &= ~TIM_CCMR2_OC4M_0;
+		TIM4->CCMR2 |= TIM_CCMR2_OC4M_1 | TIM_CCMR2_OC4M_2;	// PWM mode 1 upcounting
+		TIM4->CCMR2 &= ~TIM_CCMR2_OC4M_0;
 
-	TIM4->CCMR2 |= TIM_CCMR2_OC4PE;	// Preload Enable
-	TIM4->CCMR2 &= ~TIM_CCMR2_CC4S;	// Output
-	TIM4->CCER 	|= TIM_CCER_CC4E;	// Channel is ON
-	TIM4->CR1 	|= TIM_CR1_ARPE;	// Auto reload
-	TIM4->EGR 	|= TIM_EGR_UG;		// Reinitialize the counter
-	TIM4->SR 	&= TIM_SR_UIF;		// Clear update interrupt flag
-	TIM4->BDTR 	|= TIM_BDTR_MOE;	// Main output Enable
+		TIM4->CCMR2 |= TIM_CCMR2_OC4PE;	// Preload Enable
+		TIM4->CCMR2 &= ~TIM_CCMR2_CC4S;	// Output
+		TIM4->CCER 	|= TIM_CCER_CC4E;	// Channel is ON
+		TIM4->CR1 	|= TIM_CR1_ARPE;	// Auto reload
+		TIM4->EGR 	|= TIM_EGR_UG;		// Reinitialize the counter
+		TIM4->SR 	&= TIM_SR_UIF;		// Clear update interrupt flag
+		TIM4->BDTR 	|= TIM_BDTR_MOE;	// Main output Enable
 
-	TIM4->CCR2 = 0; 	// Set duty cycle to 0%
+		TIM4->CCR2 = 0; 	// Set duty cycle to 0%
 
-	// Init Timer 4 CH3
-	TIM4->CCMR2 |= TIM_CCMR2_OC3M_1 | TIM_CCMR2_OC3M_2;	// PWM mode 1 upcounting
-	TIM4->CCMR2 &= ~TIM_CCMR2_OC3M_0;
+		// Init Timer 4 CH3
+		TIM4->CCMR2 |= TIM_CCMR2_OC3M_1 | TIM_CCMR2_OC3M_2;	// PWM mode 1 upcounting
+		TIM4->CCMR2 &= ~TIM_CCMR2_OC3M_0;
 
-	TIM4->CCMR2 |= TIM_CCMR2_OC3PE;	// Preload Enable
-	TIM4->CCMR2 &= ~TIM_CCMR2_CC3S;	// Output
-	TIM4->CCER 	|= TIM_CCER_CC3E;	// Channel is ON
+		TIM4->CCMR2 |= TIM_CCMR2_OC3PE;	// Preload Enable
+		TIM4->CCMR2 &= ~TIM_CCMR2_CC3S;	// Output
+		TIM4->CCER 	|= TIM_CCER_CC3E;	// Channel is ON
 
-	TIM4->CCR3 = 0; 	// Set duty cycle to 0%
+		TIM4->CCR3 = 0; 	// Set duty cycle to 0%
 
-	// Start Timer 4
-	TIM4->CR1 |= TIM_CR1_CEN;
+		// Start Timer 4
+		TIM4->CR1 |= TIM_CR1_CEN;
 
 
 }
