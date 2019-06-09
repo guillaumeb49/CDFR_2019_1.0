@@ -37,7 +37,7 @@
 #define KI_DIST_POS 	0
 
 #define DV_MAX			10		// Acceleration max
-#define V_MAX			100.0	// Vit max en mm/s
+#define V_MAX			200.0	// Vit max en mm/s
 
 /* #### Fonctions principales #### */
 void  F_AUTO_SpeedRegulator(void);

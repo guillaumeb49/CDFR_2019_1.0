@@ -8,6 +8,9 @@
 #include "A_commandes.h"
 
 extern Localisation g_estimate;
+extern int g_nbPoints;
+extern int g_i_point;
+extern int g_enableAUTO;
 
 /**
  *
@@ -25,6 +28,7 @@ void F_Process_Command(struct tcp_command s_cmd_received, struct tcp_answer *s_c
 	{
 		// Get info
 		case CMD_INFO:
+			F_Cmd_Info(s_cmd_received, s_cmd_answer);
 			break;
 
 		// Set LED
@@ -75,6 +79,12 @@ void F_Process_Command(struct tcp_command s_cmd_received, struct tcp_answer *s_c
 				F_Cmd_GetTirette(s_cmd_received, s_cmd_answer);
 			break;
 
+		// Get the list of points
+			case CMD_MOVE_SERVO:
+				F_Cmd_MoveServo(s_cmd_received, s_cmd_answer);
+			break;
+
+
 		// Error, unknown command
 		default:
 			break;
@@ -88,9 +98,34 @@ void F_Process_Command(struct tcp_command s_cmd_received, struct tcp_answer *s_c
 
 /**
  * Get the info and build the TCP packet accordingly
+ * s_cmd_answer->reponse[0] = 0;	// current x
+   s_cmd_answer->reponse[1] = 0;	// current y
+   s_cmd_answer->reponse[2] = 0;	// current theta
+   s_cmd_answer->reponse[3] = 0; --> 0 0 0 0 | 0 0 0 0
+
+   reponse[3] :
+       - bits [15 - 1] : current index #
+       - bit 0 : Distance 1 & Distance 2 & Distance 3 ==> = 1 if distance < 30cm otherwise 0
+
+
  */
-void F_Cmd_Info()
+uint8_t F_Cmd_Info(Tcp_command s_cmd_received, Tcp_answer *s_cmd_answer)
 {
+	uint8_t status = STATUS_OK;
+	uint8_t distance_warning = 0;
+	if((distance_avant_1 < DISTANCE_WARNING) || (distance_avant_2 < DISTANCE_WARNING) || (distance_avant_3 < DISTANCE_WARNING))
+	{
+		distance_warning = 1;
+	}
+
+
+	s_cmd_answer->code_retour = status;
+	s_cmd_answer->reponse[0] = (int16_t)(g_estimate.x);
+	s_cmd_answer->reponse[1] = (int16_t)(g_estimate.y);
+	s_cmd_answer->reponse[2] = (int16_t)(g_estimate.teta*1000);
+	s_cmd_answer->reponse[3] = (uint16_t)((g_nbPoints << 1) | (0x01 & distance_warning));
+
+	return status;
 
 }
 
@@ -177,13 +212,40 @@ uint8_t F_Cmd_GetTirette(struct tcp_command s_cmd_received, struct tcp_answer *s
 	uint8_t status = STATUS_OK;
 
 	s_cmd_answer->code_retour = status;
-	s_cmd_answer->reponse[0] = (uint16_t)((GPIOC->IDR & GPIO_IDR_ID13)>>13);
+	s_cmd_answer->reponse[0] = (uint16_t)(F_GPIO_GetTirette());
 	s_cmd_answer->reponse[1] = 0;
 	s_cmd_answer->reponse[2] = 0;
 	s_cmd_answer->reponse[3] = 0;
 
 	return status;
 }
+
+/**
+ * Set the on board LEDs
+ */
+uint8_t F_Cmd_MoveServo(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer)
+{
+	uint8_t status = STATUS_OK;
+
+	if(s_cmd_received.params[0] == 0)
+	{
+		F_Servo_Fermer();
+	}
+	else
+	{
+		F_Servo_Ouvrir();
+	}
+
+	s_cmd_answer->code_retour = status;
+	s_cmd_answer->reponse[0] = 0;
+	s_cmd_answer->reponse[1] = 0;
+	s_cmd_answer->reponse[2] = 0;
+	s_cmd_answer->reponse[3] = 0;
+
+	return status;
+}
+
+
 
 /**
  * Set the on board LEDs
@@ -227,7 +289,7 @@ uint8_t F_Cmd_AddWayPoint(struct tcp_command s_cmd_received, struct tcp_answer *
 {
 	uint8_t status = STATUS_OK;
 
-	status = F_AUTO_AddTargetPoint((float)s_cmd_received.params[0] , (float)s_cmd_received.params[1], (float)s_cmd_received.params[2]);
+	status = F_AUTO_AddTargetPoint((float)((int16_t)s_cmd_received.params[0]) , (float)((int16_t)s_cmd_received.params[1]), (float)((int16_t)s_cmd_received.params[2]));
 
 
 	s_cmd_answer->code_retour = status;
@@ -257,7 +319,7 @@ uint8_t F_Cmd_StartStopRegulation(struct tcp_command s_cmd_received, struct tcp_
 	}
 
 	s_cmd_answer->code_retour = status;
-	s_cmd_answer->reponse[0] = 0;
+	s_cmd_answer->reponse[0] = (uint16_t)g_enableAUTO;
 	s_cmd_answer->reponse[1] = 0;
 	s_cmd_answer->reponse[2] = 0;
 	s_cmd_answer->reponse[3] = 0;

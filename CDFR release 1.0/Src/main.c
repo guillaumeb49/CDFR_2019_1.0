@@ -88,7 +88,8 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+
+	HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -124,7 +125,7 @@ int main(void)
   TIM13->DIER |= TIM_DIER_UIE;	// Enable interrupt
   TIM13->CR1 |= TIM_CR1_CEN;
 
-  F_Init_TimerServo();
+
 
 
   Init_Motors();
@@ -142,24 +143,27 @@ int main(void)
 #endif
 
 
+ /* F_QEI_setPosition(100,-727,0);
+
+
+  F_AUTO_AddTargetPoint(200 , -727, 0);
+  F_AUTO_AddTargetPoint(200 , -1350, 0);
+  F_AUTO_AddTargetPoint(900 , -1350, 0);
+  F_AUTO_AddTargetPoint(300 , -727, 180);
+
+*/
+
   int dcG=0,dcD=0,bp_flag=0,dutyC=25;
   float speedL,speedR;
   int angleDeg=90;
 
-  F_QEI_setPosition(100,-420,0);
 
-  F_AUTO_AddTargetPoint( 220 , -200 , 0);		// 1
-  F_AUTO_AddTargetPoint( 500 , -200 , 0);		// 2
-  F_AUTO_AddTargetPoint( 900 , -450 , 0);		// 2
-  F_AUTO_AddTargetPoint( 500 , -420 , 0);		// 3 Pousse le palet 1
-  F_AUTO_AddTargetPoint( 500 , -650 , 0);
-  F_AUTO_AddTargetPoint( 850 , -650 , 0);
-  F_AUTO_AddTargetPoint( 850 , -950 , 0);
-  F_AUTO_AddTargetPoint( 300 , -1050 , 0);
-  F_AUTO_AddTargetPoint( 100 , -420 , 0);
+ // while(F_GPIO_GetTirette() == 1);
 
-  F_AUTO_Enable();
+ // F_AUTO_Enable();
 
+  F_Init_TimerServo();
+  F_Servo_Fermer();
 
 #if PRINTF_USB_UART == 1
   printf("Entering the infinite loop....\r\n");
@@ -172,7 +176,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
+	     /* USER CODE BEGIN 3 */
 
 	  // Handle the TCP connection
 #if USE_TCP_SERVER == 1
@@ -202,7 +206,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 4;
-  RCC_OscInitStruct.PLL.PLLN = 168;
+  RCC_OscInitStruct.PLL.PLLN = 180;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 7;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)

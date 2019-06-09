@@ -27,19 +27,21 @@
 #define CMD_GET_LIST_POINTS	0x0A
 #define CMD_GET_TIRETTE     0x0B
 
+#define CMD_MOVE_SERVO     	0x0C
+
 #define STATUS_OK			0x00
 #define STATUS_UNKNOWN_CMD	0x01
 #define STATUS_ERROR_PARAM	0x02
 
 
-
-void F_Cmd_Info();
 void F_Process_Command(Tcp_command s_cmd_received, Tcp_answer *s_cmd_answer);
 
+uint8_t F_Cmd_Info(Tcp_command s_cmd_received, Tcp_answer *s_cmd_answer);
 uint8_t F_Cmd_SetLED(Tcp_command s_cmd_received, Tcp_answer *s_cmd_answer);
 uint8_t F_Cmd_GetLED(Tcp_command s_cmd_received, Tcp_answer *s_cmd_answer);
 uint8_t F_Cmd_GetDistance(Tcp_command s_cmd_received, Tcp_answer *s_cmd_answer);
 uint8_t F_Cmd_GetTirette(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer);
+uint8_t F_Cmd_MoveServo(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer);
 uint8_t F_Cmd_GetPosition(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer);
 uint8_t F_Cmd_SetPosition(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer);
 uint8_t F_Cmd_AddWayPoint(struct tcp_command s_cmd_received, struct tcp_answer *s_cmd_answer);

@@ -42,6 +42,7 @@ extern "C" {
 #define SIZE_PARAM_CMD 4
 
 #define DUREE_MATCH 100
+#define DISTANCE_WARNING 300
 
 struct localisation {
 	float x;

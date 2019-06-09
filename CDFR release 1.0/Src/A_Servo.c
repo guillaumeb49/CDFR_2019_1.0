@@ -27,7 +27,7 @@ void F_Init_TimerServo()
 
 
 	TIM9->PSC = 840-1;	// Prescaler
-	TIM9->ARR = 4000-1;	// 20 ms (PWM Frequency)
+	TIM9->ARR = 4100-1;	// 20 ms (PWM Frequency)
 
 	TIM9->CCMR1 |= TIM_CCMR1_OC2M_1 | TIM_CCMR1_OC2M_2;	// PWM mode 1 upcounting
 	TIM9->CCMR1 &= ~TIM_CCMR1_OC2M_0;
@@ -47,11 +47,24 @@ void F_Init_TimerServo()
 	TIM9->SR 	&= TIM_SR_UIF;		// Clear update interrupt flag
 	TIM9->BDTR 	|= TIM_BDTR_MOE;	// Main output Enable
 
-	TIM9->CCR1 = 2000-1; 	// Set duty cycle
+	TIM9->CCR1 = 500-1; 	// Set duty cycle
 
-	TIM9->CCR2 = 200-1; 	// Set duty cycle
+	TIM9->CCR2 = 500-1; 	// Set duty cycle
 
 	// Start Timer 1
 	TIM9->CR1 |= TIM_CR1_CEN;
+}
 
+
+void F_Servo_Ouvrir(void)
+{
+	TIM9->CCR1 = 500-1; 	// Set duty cycle
+		TIM9->CCR2 = 500-1; 	// Set duty cycle
+}
+
+void F_Servo_Fermer(void)
+{
+
+	TIM9->CCR1 = 200-1; 	// Set duty cycle
+	TIM9->CCR2 = 200-1; 	// Set duty cycle
 }

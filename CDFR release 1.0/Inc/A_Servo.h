@@ -4,4 +4,7 @@
 
 void F_Init_TimerServo();
 
+void F_Servo_Ouvrir(void);
+void F_Servo_Fermer(void);
+
 #endif

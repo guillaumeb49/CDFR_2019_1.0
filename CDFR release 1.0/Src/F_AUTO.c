@@ -69,9 +69,16 @@ void F_AUTO_SpeedRegulator(void){
 	l_errLeftDt  = l_errLeft - g_errLeftOld ;
 	l_errRigthDt = l_errRigth - g_errRightOld ;
 
-	g_errLeftSum  += l_errLeft  * g_enableAUTO ;//* g_obstacle_not;
-	g_errRightSum += l_errRigth * g_enableAUTO ;// * g_obstacle_not;
-
+	if(token==REG_TETA)
+	{
+		g_errLeftSum  += l_errLeft  * g_enableAUTO;
+		g_errRightSum += l_errRigth * g_enableAUTO;
+	}
+	else
+	{
+		g_errLeftSum  += l_errLeft  * g_enableAUTO * g_obstacle_not;
+		g_errRightSum += l_errRigth * g_enableAUTO * g_obstacle_not;
+	}
 	g_errLeftOld  = l_errLeft;
 	g_errRightOld = l_errRigth;
 
@@ -89,7 +96,7 @@ void F_AUTO_SpeedRegulator(void){
 	if(l_cmd_left_dV  > DV_MAX) l_cmd_left  += DV_MAX ;
 
 	// Application de la commande
-	if(g_enableAUTO==0){//|| (g_obstacle_not==0 && token!=REG_TETA) ){
+	if((g_enableAUTO==0)|| (g_obstacle_not==0 && token!=REG_TETA) ){
 		F_PWM_SetCmdMotorGauche( 0 );
 		F_PWM_SetCmdMotorDroit( 0 );
 	}else{
@@ -176,7 +183,16 @@ void F_AUTO_PositionRegulator(void){
 			F_Math_ModuloPi(&l_errT) ;
 
 			l_errT_D   = l_errT - g_errT_old;		// Derivative
-			g_tetaSum += l_errT * g_enableAUTO * g_obstacle_not;		// Update sum
+
+			if(token==REG_TETA)
+			{
+				g_tetaSum += l_errT * g_enableAUTO;		// Update sum
+			}
+			else
+			{
+				g_tetaSum += l_errT * g_enableAUTO * g_obstacle_not;		// Update sum
+			}
+
 			g_errT_old = l_errT;					// Save value
 
 			// Gestion de la distance
@@ -215,7 +231,15 @@ void F_AUTO_PositionRegulator(void){
 			}
 
 			l_errT_D   = l_errT - g_errT_old;		// Derivative
-			g_tetaSum += l_errT * g_enableAUTO * g_obstacle_not;		// Update sum
+			if(token==REG_TETA)
+			{
+				g_tetaSum += l_errT * g_enableAUTO;		// Update sum
+			}
+			else
+			{
+				g_tetaSum += l_errT * g_enableAUTO * g_obstacle_not;		// Update sum
+			}
+
 			g_errT_old = l_errT;					// Save value
 
 			// Calcul de la commande

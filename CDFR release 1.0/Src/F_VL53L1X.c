@@ -17,6 +17,8 @@ uint16_t distance_avant_2 = 0;
 uint16_t distance_avant_3 = 0;
 uint16_t distance_arriere_1 = 0;
 
+extern int g_enableAUTO;
+extern int g_obstacle_not;
 /**
  * Init all the VL53L1X connected to I2C2
  */
@@ -53,7 +55,7 @@ void F_VL53L1X_InitSensors()
 
 
 	// Configure VL53L1X_AVANT_2_ADDR	0x12	PF3
-		// Set PF2 high
+	// Set PF2 high
 		GPIOF->ODR |= GPIO_ODR_OD3;
 
 		// small delay
@@ -128,6 +130,10 @@ void F_VL53L1X_CheckSensors(void)
 		{
 			VL53L1X_GetDistance(dev_avant_1, &distance_avant_1);
 		}
+		else
+		{
+			distance_avant_1 = 1000;
+		}
 		VL53L1X_ClearInterrupt(dev_avant_1);
 
 	}
@@ -142,6 +148,10 @@ void F_VL53L1X_CheckSensors(void)
 		{
 			VL53L1X_GetDistance(dev_avant_2, &distance_avant_2);
 		}
+		else
+		{
+			distance_avant_2 = 1000;
+		}
 		VL53L1X_ClearInterrupt(dev_avant_2);
 	}
 
@@ -154,6 +164,10 @@ void F_VL53L1X_CheckSensors(void)
 		if(rangeStatus == 0)
 		{
 			VL53L1X_GetDistance(dev_avant_3, &distance_avant_3);
+		}
+		else
+		{
+			distance_avant_3 = 1000;
 		}
 		VL53L1X_ClearInterrupt(dev_avant_3);
 	}
@@ -171,6 +185,18 @@ void F_VL53L1X_CheckSensors(void)
 		}
 		VL53L1X_ClearInterrupt(dev_arriere_1);
 	}*/
+
+
+
+	if(((distance_avant_1 < 100) || (distance_avant_2 < 100) || (distance_avant_3 < 100)))
+	{
+		g_obstacle_not = 0;
+	}
+	else
+	{
+		g_obstacle_not = 1;
+	}
+
 
 }
 

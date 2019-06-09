@@ -187,6 +187,18 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(USB_OverCurrent_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : D2 pour la tirette */
+
+    GPIO_InitStruct.Pin = GPIO_PIN_15;
+
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
+
+    HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+
 }
 
 /* USER CODE BEGIN 2 */
@@ -220,7 +232,7 @@ int F_GPIO_GetBtn(void){
 
 int F_GPIO_GetTirette(void){
 	int l_state = 0;
-	(GPIOF->IDR & GPIO_PIN_15) ? (l_state=1) : (l_state=0) ;
+	(GPIOF->IDR & GPIO_PIN_15) ? (l_state=0) : (l_state=1) ;
 	return l_state;
 }
 
